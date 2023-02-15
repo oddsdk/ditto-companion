@@ -54,33 +54,6 @@ export const prepareUsername = async (username: string): Promise<string> => {
     .slice(0, 32)
 }
 
-export const register = async (hashedUsername: string): Promise<boolean> => {
-  const { authStrategy, program: { components: { storage } } } = getStore(sessionStore)
-
-  const { success } = await authStrategy.register({ username: hashedUsername })
-
-  if (!success) return success
-
-  const session = await authStrategy.session()
-  filesystemStore.set(session.fs)
-
-  // TODO Remove if only public and private directories are needed
-  await initializeFilesystem(session.fs)
-
-  const fullUsername = await storage.getItem(USERNAME_STORAGE_KEY) as string
-
-  sessionStore.update(state => ({
-    ...state,
-    username: {
-      full: fullUsername,
-      display: fullUsername.split('-')[ 1 ]
-    },
-    session
-  }))
-
-  return success
-}
-
 /**
  * Create additional directories and files needed by the app
  *
