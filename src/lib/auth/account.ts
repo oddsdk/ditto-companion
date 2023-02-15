@@ -7,19 +7,11 @@ import { get as getStore } from 'svelte/store'
 
 import { asyncDebounce } from '$lib/utils'
 import { filesystemStore, sessionStore } from '../../stores'
-import { getBackupStatus } from '$lib/auth/backup'
 import { ACCOUNT_SETTINGS_DIR } from '$lib/account-settings'
 import { AREAS } from '$routes/gallery/stores'
 import { GALLERY_DIRS } from '$routes/gallery/lib/gallery'
 
 export const USERNAME_STORAGE_KEY = 'fullUsername'
-
-export enum RECOVERY_STATES {
-  Ready,
-  Processing,
-  Error,
-  Done
-}
 
 export const isUsernameValid = async (username: string): Promise<boolean> => {
   const session = getStore(sessionStore)
@@ -62,34 +54,6 @@ export const prepareUsername = async (username: string): Promise<string> => {
     .slice(0, 32)
 }
 
-export const register = async (hashedUsername: string): Promise<boolean> => {
-  const { authStrategy, program: { components: { storage } } } = getStore(sessionStore)
-
-  const { success } = await authStrategy.register({ username: hashedUsername })
-
-  if (!success) return success
-
-  const session = await authStrategy.session()
-  filesystemStore.set(session.fs)
-
-  // TODO Remove if only public and private directories are needed
-  await initializeFilesystem(session.fs)
-
-  const fullUsername = await storage.getItem(USERNAME_STORAGE_KEY) as string
-
-  sessionStore.update(state => ({
-    ...state,
-    username: {
-      full: fullUsername,
-      hashed: hashedUsername,
-      trimmed: fullUsername.split('#')[ 0 ]
-    },
-    session
-  }))
-
-  return success
-}
-
 /**
  * Create additional directories and files needed by the app
  *
@@ -101,24 +65,18 @@ const initializeFilesystem = async (fs: FileSystem): Promise<void> => {
   await fs.mkdir(ACCOUNT_SETTINGS_DIR)
 }
 
-export const loadAccount = async (hashedUsername: string, fullUsername: string): Promise<void> => {
-  const { authStrategy, program: { components: { storage } } } = getStore(sessionStore)
+export const loadAccount = async (username: string): Promise<void> => {
+  const { authStrategy } = getStore(sessionStore)
   const session = await authStrategy.session()
 
   filesystemStore.set(session.fs)
 
-  const backupStatus = await getBackupStatus(session.fs)
-
-  await storage.setItem(USERNAME_STORAGE_KEY, fullUsername)
-
   sessionStore.update(state => ({
     ...state,
     username: {
-      full: fullUsername,
-      hashed: hashedUsername,
-      trimmed: fullUsername.split('#')[ 0 ],
+      full: username,
+      display: username.split('-')[ 1 ]
     },
-    session,
-    backupCreated: backupStatus.created
+    session
   }))
 }

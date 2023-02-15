@@ -4,8 +4,7 @@ import { appName } from '$lib/app-info'
 
 type Username = {
   full: string
-  hashed: string
-  trimmed: string
+  display: string
 }
 
 export type Session = {
@@ -14,7 +13,6 @@ export type Session = {
   authStrategy: webnative.AuthenticationStrategy | null
   program: webnative.Program
   loading: boolean
-  backupCreated: boolean
   error?: SessionError
 }
 

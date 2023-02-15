@@ -1,6 +1,6 @@
-export const appName = 'Webnative SDK Demo'
-export const appDescription = 'This is another awesome Webnative app.'
-export const appURL = 'https://webnative.netlify.app'
+export const appName = 'Ditto Companion'
+export const appDescription = 'A companion web app for the Ditto delay plugin '
+export const appURL = 'TBD'
 export const appImageURL = `${appURL}/preview.png`
 export const ipfsGatewayUrl = 'runfission.com'
-export const webnativeNamespace = { creator: 'Fission', name: 'WAT' }
+export const webnativeNamespace = { creator: 'fission', name: 'ditto-companion' }

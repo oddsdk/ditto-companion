@@ -25,7 +25,7 @@
     class="modal-box w-narrowModal relative text-center dark:border-slate-600 dark:border"
   >
     <div class="grid grid-flow-row auto-rows-max gap-7">
-      <h3 class="text-base">Connect to {appName}</h3>
+      <h3 class="text-base">Connect to Ditto plugin</h3>
       <div class="grid grid-flow-row auto-rows-max gap-4 justify-items-center">
         {#if pin}
           <span
@@ -36,7 +36,7 @@
           </span>
         {/if}
         <span class="text-sm text-left">
-          Enter this code on your connected device.
+          Enter this code in the Ditto plugin.
         </span>
         <div
           class="grid grid-flow-col auto-cols-max gap-4 justify-center items-center text-slate-500"
