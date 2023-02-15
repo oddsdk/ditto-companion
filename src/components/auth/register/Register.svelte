@@ -168,8 +168,5 @@
         </div>
       {/if}
     </div>
-
-    <!-- Recovery Link -->
-    <a href="/recover" class="underline">Recover an account</a>
   </div>
 {/if}

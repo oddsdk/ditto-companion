@@ -69,7 +69,7 @@
     </div>
     <div
       class="drawer-side {$page.url.pathname.match(
-        /register|backup|delegate|recover/
+        /register|backup|delegate/
       )
         ? '!hidden'
         : ''}"

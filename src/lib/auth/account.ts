@@ -7,19 +7,11 @@ import { get as getStore } from 'svelte/store'
 
 import { asyncDebounce } from '$lib/utils'
 import { filesystemStore, sessionStore } from '../../stores'
-import { getBackupStatus } from '$lib/auth/backup'
 import { ACCOUNT_SETTINGS_DIR } from '$lib/account-settings'
 import { AREAS } from '$routes/gallery/stores'
 import { GALLERY_DIRS } from '$routes/gallery/lib/gallery'
 
 export const USERNAME_STORAGE_KEY = 'fullUsername'
-
-export enum RECOVERY_STATES {
-  Ready,
-  Processing,
-  Error,
-  Done
-}
 
 export const isUsernameValid = async (username: string): Promise<boolean> => {
   const session = getStore(sessionStore)
