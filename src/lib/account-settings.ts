@@ -188,15 +188,14 @@ export const generateRecoveryKit = async (): Promise<string> => {
     },
     username: {
       full,
-      hashed,
-      trimmed,
+      display,
     }
   } = getStore(sessionStore)
 
   // Get the user's read-key and base64 encode it
-  const accountDID = await reference.didRoot.lookup(hashed)
-  const readKey = await retrieve({ crypto, accountDID })
-  const encodedReadKey = uint8arrays.toString(readKey, 'base64pad')
+  // const accountDID = await reference.didRoot.lookup(hashed)
+  // const readKey = await retrieve({ crypto, accountDID })
+  // const encodedReadKey = uint8arrays.toString(readKey, 'base64pad')
 
   // Get today's date to display in the kit
   const options: Intl.DateTimeFormatOptions = {
@@ -230,7 +229,7 @@ export const generateRecoveryKit = async (): Promise<string> => {
 #
 # This is your recovery kit. (It’s a yaml text file)
 #
-# Created for ${trimmed} on ${date.toLocaleDateString('en-US', options)}
+# Created for ${display} on ${date.toLocaleDateString('en-US', options)}
 #
 # Store this somewhere safe.
 #
@@ -244,7 +243,7 @@ export const generateRecoveryKit = async (): Promise<string> => {
 # Learn how to customize this kit for your users: https://guide.fission.codes/
 
 username: ${full}
-key: ${encodedReadKey}`
+`
 
   return content
 }

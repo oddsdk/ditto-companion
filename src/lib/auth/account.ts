@@ -81,8 +81,7 @@ export const register = async (hashedUsername: string): Promise<boolean> => {
     ...state,
     username: {
       full: fullUsername,
-      hashed: hashedUsername,
-      trimmed: fullUsername.split('#')[ 0 ]
+      display: fullUsername.split('-')[ 1 ]
     },
     session
   }))
@@ -101,24 +100,18 @@ const initializeFilesystem = async (fs: FileSystem): Promise<void> => {
   await fs.mkdir(ACCOUNT_SETTINGS_DIR)
 }
 
-export const loadAccount = async (hashedUsername: string, fullUsername: string): Promise<void> => {
-  const { authStrategy, program: { components: { storage } } } = getStore(sessionStore)
+export const loadAccount = async (username: string): Promise<void> => {
+  const { authStrategy } = getStore(sessionStore)
   const session = await authStrategy.session()
 
   filesystemStore.set(session.fs)
 
-  const backupStatus = await getBackupStatus(session.fs)
-
-  await storage.setItem(USERNAME_STORAGE_KEY, fullUsername)
-
   sessionStore.update(state => ({
     ...state,
     username: {
-      full: fullUsername,
-      hashed: hashedUsername,
-      trimmed: fullUsername.split('#')[ 0 ],
+      full: username,
+      display: username.split('-')[ 1 ]
     },
-    session,
-    backupCreated: backupStatus.created
+    session
   }))
 }

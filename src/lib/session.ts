@@ -4,8 +4,7 @@ import { appName } from '$lib/app-info'
 
 type Username = {
   full: string
-  hashed: string
-  trimmed: string
+  display: string
 }
 
 export type Session = {

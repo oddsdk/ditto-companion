@@ -11,7 +11,7 @@
   import FilesystemActivity from '$components/common/FilesystemActivity.svelte'
 
   let username: string = ''
-  let encodedUsername: string = ''
+  let fullUsername: string = ''
   let usernameValid = true
   let usernameAvailable = true
   let registrationSuccess = true
@@ -21,24 +21,10 @@
 
   const checkUsername = async (event: Event) => {
     const { value } = event.target as HTMLInputElement
-    const {
-      program: {
-        components: { crypto, storage }
-      }
-    } = getStore(sessionStore)
 
-    username = value
-    checkingUsername = true
+    fullUsername = `ditto-${value}`
 
-    /**
-     * Create a new DID for the user, which will be appended to their username, concatenated
-     * via a `#`, hashed and encoded to ensure uniqueness
-     */
-    const did = await createDID(crypto)
-    const fullUsername = `${value}#${did}`
-    await storage.setItem(USERNAME_STORAGE_KEY, fullUsername)
-
-    encodedUsername = await prepareUsername(fullUsername)
+    // TODO remove register function, we will only register in the plugin
 
     checkingUsername = false
   }
@@ -52,7 +38,7 @@
 
     initializingFilesystem = true
 
-    registrationSuccess = await register(encodedUsername)
+    registrationSuccess = await register(fullUsername)
 
     if (!registrationSuccess) initializingFilesystem = false
   }
