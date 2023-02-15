@@ -5,6 +5,7 @@ on:
       - main
 jobs:
   publish_job:
+    if: ${{ false }}
     name: '🚀 Publish'
     runs-on: ubuntu-latest
     steps:
@@ -22,5 +23,5 @@ jobs:
         uses: fission-suite/publish-action@v1
         with:
           machine_key: ${{ secrets.FISSION_MACHINE_KEY }}
-          app_url: webnative-template.fission.app
+          app_url: TBD.fission.app
           build_dir: ./build
