@@ -13,7 +13,6 @@ export type Session = {
   authStrategy: webnative.AuthenticationStrategy | null
   program: webnative.Program
   loading: boolean
-  backupCreated: boolean
   error?: SessionError
 }
 

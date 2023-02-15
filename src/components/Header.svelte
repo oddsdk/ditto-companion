@@ -1,6 +1,5 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import { page } from '$app/stores'
   import { sessionStore, themeStore } from '../stores'
   import { DEFAULT_THEME_KEY, storeTheme, type ThemeOptions } from '$lib/theme'
   import AlphaTag from '$components/nav/AlphaTag.svelte'
@@ -10,7 +9,6 @@
   import DarkMode from '$components/icons/DarkMode.svelte'
   import Hamburger from '$components/icons/Hamburger.svelte'
   import LightMode from '$components/icons/LightMode.svelte'
-  import Shield from '$components/icons/Shield.svelte'
 
   const setTheme = (newTheme: ThemeOptions) => {
     localStorage.setItem(DEFAULT_THEME_KEY, 'false')
@@ -36,6 +34,7 @@
       <div
         class="flex items-center cursor-pointer gap-3"
         on:click={() => goto('/')}
+        on:keypress={() => goto('/')}
       >
         <BrandLogo />
         <AlphaTag />
@@ -43,11 +42,11 @@
     {/if}
   </div>
 
-  <!-- Even if the user is not authed, render this header in the connection flow -->
-  {#if !$sessionStore.session || $page.url.pathname.match(/backup|delegate/)}
+  {#if !$sessionStore.session}
     <div
       class="hidden lg:flex flex-1 items-center cursor-pointer gap-3"
       on:click={() => goto('/')}
+      on:keypress={() => goto('/')}
     >
       <BrandLogo />
       <div class="hidden lg:inline-block">
@@ -60,16 +59,6 @@
   {/if}
 
   <div class="ml-auto">
-    {#if !$sessionStore.loading && $sessionStore.backupCreated === false}
-      <span
-        on:click={() => goto('/delegate-account')}
-        class="btn btn-sm h-10 btn-warning rounded-full bg-orange-200 border-2 border-neutral-900 font-medium text-neutral-900 transition-colors ease-in hover:bg-orange-300"
-      >
-        <span class="mr-2">Backup recommended</span>
-        <Shield />
-      </span>
-    {/if}
-
     {#if $sessionStore.session}
       <a href="/settings" class="ml-2 cursor-pointer">
         <Avatar size="small" />
@@ -78,11 +67,17 @@
 
     <span class="ml-2 cursor-pointer">
       {#if $themeStore.selectedTheme === 'light'}
-        <span on:click={() => setTheme('dark')}>
+        <span
+          on:click={() => setTheme('dark')}
+          on:keypress={() => setTheme('dark')}
+        >
           <LightMode />
         </span>
       {:else}
-        <span on:click={() => setTheme('light')}>
+        <span
+          on:click={() => setTheme('light')}
+          on:keypress={() => setTheme('light')}
+        >
           <DarkMode />
         </span>
       {/if}

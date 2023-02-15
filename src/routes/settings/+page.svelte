@@ -2,7 +2,6 @@
   import { goto } from '$app/navigation'
   import { sessionStore } from '$src/stores'
   import AvatarUpload from '$components/settings/AvatarUpload.svelte'
-  import ConnectedDevices from '$components/settings/ConnectedDevices.svelte'
   import ThemePreferences from '$components/settings/ThemePreferences.svelte'
   import Username from '$components/settings/Username.svelte'
 </script>
@@ -19,8 +18,6 @@
       <Username />
 
       <ThemePreferences />
-
-      <ConnectedDevices />
     </div>
   </div>
 {:else}

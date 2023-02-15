@@ -60,13 +60,7 @@
     <div class="drawer-content flex flex-col">
       <slot />
     </div>
-    <div
-      class="drawer-side {$page.url.pathname.match(
-        /backup|delegate/
-      )
-        ? '!hidden'
-        : ''}"
-    >
+    <div class="drawer-side">
       <label
         for="sidebar-nav"
         class="drawer-overlay !bg-[#262626] !opacity-[.85]"

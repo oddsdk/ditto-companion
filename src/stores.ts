@@ -16,7 +16,6 @@ export const sessionStore: Writable<Session> = writable({
   authStrategy: null,
   program: null,
   loading: true,
-  backupCreated: null
 })
 
 export const filesystemStore: Writable<FileSystem | null> = writable(null)

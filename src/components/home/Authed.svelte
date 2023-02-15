@@ -15,17 +15,4 @@
     </p>
     <a class="btn btn-primary" href="/gallery">Try the Photo Gallery Demo</a>
   </div>
-
-  <div class="flex flex-col items-start justify-center gap-5">
-    <h2 class="text-lg">Device Connection Demo</h2>
-    <p>
-      With Webnative SDK, a user’s account lives only on their connected devices
-      — entirely under their control. It’s easy for them to connect as many
-      devices as they’d like. For recoverability, we recommend they always
-      connect at least two.
-    </p>
-    <a class="btn btn-primary" href="/delegate-account">
-      Connect an additional device
-    </a>
-  </div>
 </div>

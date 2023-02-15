@@ -49,11 +49,6 @@
 <div class="flex flex-col gap-4">
   <h3 class="text-lg">Theme preference</h3>
 
-  <p>
-    Your theme preference is saved per device. Any newly connected device will
-    adopt the preference from the device it was connected by.
-  </p>
-
   <div>
     <div class="form-control items-start">
       <label class="label cursor-pointer">
