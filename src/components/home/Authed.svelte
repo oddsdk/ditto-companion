@@ -8,11 +8,11 @@
   <h1 class="text-xl">Welcome, {$sessionStore.username.display}!</h1>
 
   <div class="flex flex-col items-start justify-center gap-5">
-    <h2 class="text-lg">Photo Gallery Demo</h2>
+    <h2 class="text-lg">Presets</h2>
     <p>
-      Webnative makes it easy to implement private, encrypted, user-owned
-      storage in your app. See it in action with our photo gallery demo.
+      Ditto companion lets you share your presets and collect presets from other
+      Ditto users.
     </p>
-    <a class="btn btn-primary" href="/gallery">Try the Photo Gallery Demo</a>
+    <a class="btn btn-primary" href="/presets">View Presets</a>
   </div>
 </div>

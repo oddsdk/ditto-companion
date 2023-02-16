@@ -1,6 +1,5 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import { page } from '$app/stores'
   import { sessionStore } from '$src/stores'
   import AlphaTag from '$components/nav/AlphaTag.svelte'
   import BrandLogo from '$components/icons/BrandLogo.svelte'
@@ -18,8 +17,8 @@
       icon: Home
     },
     {
-      label: 'Photo Gallery Demo',
-      href: '/gallery/',
+      label: 'Presets',
+      href: '/presets/',
       icon: PhotoGallery
     },
     {

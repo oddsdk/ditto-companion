@@ -2,17 +2,17 @@
   import { onDestroy } from 'svelte'
   import { goto } from '$app/navigation'
 
-  import { sessionStore } from '$src/stores'
-  import { AREAS, galleryStore } from '$routes/gallery/stores'
-  import Dropzone from '$routes/gallery/components/upload/Dropzone.svelte'
-  import ImageGallery from '$routes/gallery/components/imageGallery/ImageGallery.svelte'
+  import { presetsStore, sessionStore } from '$src/stores'
+  import { type Area, AREAS } from '$lib/presets'
+  import PresetsContainer from '$components/presets/Container.svelte'
+  import Presets from '$components/presets/Presets.svelte'
 
   /**
-   * Tab between the public/private areas and load associated images
+   * Tab between the share/collect areas and load associated presets
    * @param area
    */
-  const handleChangeTab: (area: AREAS) => void = area =>
-    galleryStore.update(store => ({
+  const handleChangeTab: (area: Area) => void = area =>
+    presetsStore.update(store => ({
       ...store,
       selectedArea: area
     }))
@@ -31,22 +31,21 @@
   {#if $sessionStore.session}
     <div class="flex items-center justify-center translate-y-1/2 w-fit m-auto">
       <div class="tabs border-2 overflow-hidden border-base-content rounded-lg">
-        {#each Object.keys(AREAS) as area}
+        {#each AREAS as area}
           <button
-            on:click={() => handleChangeTab(AREAS[area])}
-            class="tab h-10 font-bold text-sm ease-in {$galleryStore.selectedArea ===
-            AREAS[area]
+            on:click={() => handleChangeTab(area)}
+            class="tab h-10 font-bold text-sm ease-in {$presetsStore.selectedArea === area
               ? 'tab-active bg-base-content text-base-100'
               : 'bg-base-100 text-base-content'}"
           >
-            {AREAS[area]} Photos
+            {area}
           </button>
         {/each}
       </div>
     </div>
 
-    <Dropzone>
-      <ImageGallery />
-    </Dropzone>
+    <PresetsContainer>
+      <Presets></Presets>
+    </PresetsContainer>
   {/if}
 </div>
