@@ -34,7 +34,8 @@
         {#each AREAS as area}
           <button
             on:click={() => handleChangeTab(area)}
-            class="tab h-10 font-bold text-sm ease-in {$presetsStore.selectedArea === area
+            class="tab h-10 font-bold text-sm ease-in {$presetsStore.selectedArea ===
+            area
               ? 'tab-active bg-base-content text-base-100'
               : 'bg-base-100 text-base-content'}"
           >
@@ -45,7 +46,7 @@
     </div>
 
     <PresetsContainer>
-      <Presets></Presets>
+      <Presets />
     </PresetsContainer>
   {/if}
 </div>

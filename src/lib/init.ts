@@ -1,8 +1,10 @@
 import * as webnative from 'webnative'
 
 import { dev } from '$app/environment'
-import { filesystemStore, sessionStore } from '../stores'
+import { fileSystemStore, presetsStore, sessionStore } from '../stores'
 import { webnativeNamespace } from '$lib/app-info'
+import { hydratePresetsStore } from '$lib/presets'
+import { get } from 'svelte/store'
 
 export const initialize = async (): Promise<void> => {
   try {
@@ -25,7 +27,9 @@ export const initialize = async (): Promise<void> => {
         loading: false,
       })
 
-      filesystemStore.set(program.session.fs)
+      fileSystemStore.set(program.session.fs)
+
+      await hydratePresetsStore()
 
     } else {
       // Not authed

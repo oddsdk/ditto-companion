@@ -5,7 +5,7 @@ import type { Crypto } from 'webnative'
 import { get as getStore } from 'svelte/store'
 
 import { asyncDebounce } from '$lib/utils'
-import { filesystemStore, sessionStore } from '../../stores'
+import { fileSystemStore, sessionStore } from '../../stores'
 
 export const USERNAME_STORAGE_KEY = 'fullUsername'
 
@@ -54,7 +54,7 @@ export const loadAccount = async (username: string): Promise<void> => {
   const { authStrategy } = getStore(sessionStore)
   const session = await authStrategy.session()
 
-  filesystemStore.set(session.fs)
+  fileSystemStore.set(session.fs)
 
   sessionStore.update(state => ({
     ...state,

@@ -1,12 +1,11 @@
 import { get as getStore } from 'svelte/store'
 import * as wn from 'webnative'
-import { retrieve } from 'webnative/common/root-key'
 import * as uint8arrays from 'uint8arrays'
 import type { CID } from 'multiformats/cid'
 import type { PuttableUnixTree, File as WNFile } from 'webnative/fs/types'
 import type { Metadata } from 'webnative/fs/metadata'
 
-import { accountSettingsStore, filesystemStore, sessionStore } from '$src/stores'
+import { accountSettingsStore, fileSystemStore, sessionStore } from '$src/stores'
 import { addNotification } from '$lib/notifications'
 import { fileToUint8Array } from './utils'
 
@@ -41,7 +40,7 @@ const FILE_SIZE_LIMIT = 20
  * Move old avatar to the archive directory
  */
 const archiveOldAvatar = async (): Promise<void> => {
-  const fs = getStore(filesystemStore)
+  const fs = getStore(fileSystemStore)
 
   // Return if user has not uploaded an avatar yet
   const avatarDirExists = await fs.exists(AVATAR_DIR)
@@ -75,7 +74,7 @@ export const getAvatarFromWNFS = async (): Promise<void> => {
     // Set loading: true on the accountSettingsStore
     accountSettingsStore.update(store => ({ ...store, loading: true }))
 
-    const fs = getStore(filesystemStore)
+    const fs = getStore(fileSystemStore)
 
     // If the avatar dir doesn't exist, silently fail and let the UI handle it
     const avatarDirExists = await fs.exists(AVATAR_DIR)
@@ -145,7 +144,7 @@ export const uploadAvatarToWNFS = async (image: File): Promise<void> => {
     // Set loading: true on the accountSettingsStore
     accountSettingsStore.update(store => ({ ...store, loading: true }))
 
-    const fs = getStore(filesystemStore)
+    const fs = getStore(fileSystemStore)
 
     // Reject files over 20MB
     const imageSizeInMB = image.size / (1024 * 1024)

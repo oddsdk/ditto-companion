@@ -19,7 +19,7 @@ export const sessionStore: Writable<Session> = writable({
   loading: true,
 })
 
-export const filesystemStore: Writable<FileSystem | null> = writable(null)
+export const fileSystemStore: Writable<FileSystem | null> = writable(null)
 
 export const notificationStore: Writable<Notification[]> = writable([])
 
@@ -30,6 +30,6 @@ export const accountSettingsStore: Writable<AccountSettings> = writable({
 
 export const presetsStore: Writable<Presets> = writable({
   presets: [],
-  selectedArea: 'Share'
-  // selectedPatch: DEFAULT_PATCH.id,
+  selectedArea: 'Share',
+  selectedPatch: null
 })
