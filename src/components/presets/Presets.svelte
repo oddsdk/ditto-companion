@@ -7,6 +7,7 @@
   import PresetsCollect from './PresetsCollect.svelte'
 
   const { depot, reference } = $sessionStore.program.components
+  const username = $sessionStore.username.display
   let collectModalOpen = false
   let presets: Patch[] = []
   let selectedArea: Area
@@ -15,7 +16,7 @@
     selectedArea = store.selectedArea
 
     if (selectedArea === 'Share') {
-      presets = store.presets
+      presets = store.presets.filter(preset => preset.creator === username)
     } else {
       presets = store.collection.presets
     }
