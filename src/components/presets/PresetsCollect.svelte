@@ -22,6 +22,11 @@
     username = event.currentTarget.value
     if (username.length === 0) return
 
+    if (username === $sessionStore.username.display) {
+      errorMessage = 'No need to collect presets from yourself'
+      return
+    }
+
     errorMessage = null
 
     if (subscriptions.includes(username)) {
