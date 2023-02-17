@@ -35,6 +35,5 @@ export const presetsStore: Writable<Presets> = writable({
     collected: [],
   },
   presets: [],
-  selectedArea: 'Share',
-  selectedPatch: null
+  selectedArea: 'Share'
 })

@@ -40,7 +40,6 @@ export type Presets = {
   }
   presets: Patch[]
   selectedArea: Area
-  selectedPatch: string | null
 }
 
 
@@ -85,8 +84,7 @@ export const hydratePresetsStore = async (): Promise<void> => {
 
   presetsStore.update(store => ({
     ...store,
-    presets,
-    selectedPatch: presets[ 0 ].id ?? null,
+    presets
   }))
 }
 
