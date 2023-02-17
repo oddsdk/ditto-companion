@@ -5,6 +5,12 @@ import { fileSystemStore, presetsStore } from '../../stores'
 import { PRESETS_DIRS, Visibility } from '$lib/presets/constants'
 import { addOrUpdate, savePreset, type Patch } from '$lib/presets'
 
+/**
+ * Change the visibility of a preset
+ *
+ * @param preset Preset to update
+ * @param visibility Desired visibility
+*/
 export const updateVisibility = async (preset: Patch, visibility: Visibility): Promise<void> => {
   const fs = getStore(fileSystemStore)
   const contentPath = webnative.path.combine(PRESETS_DIRS[ preset.visibility ], webnative.path.file(`${preset.id}.json`))

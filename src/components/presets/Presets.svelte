@@ -1,10 +1,12 @@
 <script lang="ts">
   import { deletePreset, savePreset, type Area, type Patch } from '$lib/presets'
+  import { hyrdratePresetsCollection } from '$lib/presets/collect'
   import { updateVisibility } from '$lib/presets/share'
   import { Visibility } from '$lib/presets/constants'
-  import { presetsStore } from '$src/stores'
+  import { presetsStore, sessionStore } from '$src/stores'
   import PresetsCollect from './PresetsCollect.svelte'
 
+  const { depot, reference } = $sessionStore.program.components
   let collectModalOpen = false
   let presets: Patch[] = []
   let selectedArea: Area
@@ -61,6 +63,14 @@
       await deletePreset(preset)
     }
   }
+
+  async function init() {
+    const userPresets = $presetsStore.presets
+
+    await hyrdratePresetsCollection(userPresets, depot, reference)
+  }
+
+  init()
 </script>
 
 <section class="overflow-hidden text-gray-700">

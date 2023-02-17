@@ -3,6 +3,7 @@ import { get as getStore } from 'svelte/store'
 
 import { fileSystemStore, presetsStore } from '../../stores'
 import { PRESETS_DIRS, Visibility } from '$lib/presets/constants'
+import { getSubscriptions } from './collect'
 
 export type Patch = {
   version: string
