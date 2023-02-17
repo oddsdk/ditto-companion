@@ -2,14 +2,10 @@ import * as uint8arrays from 'uint8arrays'
 import { sha256 } from 'webnative/components/crypto/implementation/browser'
 import { publicKeyToDid } from 'webnative/did/transformers'
 import type { Crypto } from 'webnative'
-import type FileSystem from 'webnative/fs/index'
 import { get as getStore } from 'svelte/store'
 
 import { asyncDebounce } from '$lib/utils'
-import { filesystemStore, sessionStore } from '../../stores'
-import { ACCOUNT_SETTINGS_DIR } from '$lib/account-settings'
-import { AREAS } from '$routes/gallery/stores'
-import { GALLERY_DIRS } from '$routes/gallery/lib/gallery'
+import { fileSystemStore, sessionStore } from '../../stores'
 
 export const USERNAME_STORAGE_KEY = 'fullUsername'
 
@@ -54,22 +50,11 @@ export const prepareUsername = async (username: string): Promise<string> => {
     .slice(0, 32)
 }
 
-/**
- * Create additional directories and files needed by the app
- *
- * @param fs FileSystem
- */
-const initializeFilesystem = async (fs: FileSystem): Promise<void> => {
-  await fs.mkdir(GALLERY_DIRS[ AREAS.PUBLIC ])
-  await fs.mkdir(GALLERY_DIRS[ AREAS.PRIVATE ])
-  await fs.mkdir(ACCOUNT_SETTINGS_DIR)
-}
-
 export const loadAccount = async (username: string): Promise<void> => {
   const { authStrategy } = getStore(sessionStore)
   const session = await authStrategy.session()
 
-  filesystemStore.set(session.fs)
+  fileSystemStore.set(session.fs)
 
   sessionStore.update(state => ({
     ...state,

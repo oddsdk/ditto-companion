@@ -5,6 +5,7 @@ import type FileSystem from 'webnative/fs/index'
 import { loadTheme } from '$lib/theme'
 import type { AccountSettings } from '$lib/account-settings'
 import type { Notification } from '$lib/notifications'
+import type { Presets } from '$lib/presets'
 import type { Session } from '$lib/session'
 import type { Theme } from '$lib/theme'
 
@@ -18,11 +19,22 @@ export const sessionStore: Writable<Session> = writable({
   loading: true,
 })
 
-export const filesystemStore: Writable<FileSystem | null> = writable(null)
+export const fileSystemStore: Writable<FileSystem | null> = writable(null)
 
 export const notificationStore: Writable<Notification[]> = writable([])
 
 export const accountSettingsStore: Writable<AccountSettings> = writable({
   avatar: null,
   loading: true,
+})
+
+export const presetsStore: Writable<Presets> = writable({
+  collection: {
+    subscriptions: [],
+    presets: [],
+    collected: [],
+  },
+  presets: [],
+  selectedArea: 'Share',
+  selectedPatch: null
 })
