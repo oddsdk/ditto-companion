@@ -56,6 +56,8 @@
             }
           }))
 
+          await collect.saveSubscription(username)
+
           addNotification(`Added presets from ${username}`)
           closeModal()
         } else {
@@ -64,7 +66,6 @@
       } else {
         errorMessage = `${username} does not share presets. Tell them they should hop on this Ditto train! 🚂`
       }
-      console.log('presets directory', presetsDirectory)
     } else {
       errorMessage = `Could not find a user named ${username}`
     }

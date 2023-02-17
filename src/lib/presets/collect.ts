@@ -1,9 +1,12 @@
+import * as webnative from 'webnative'
+import { get as getStore } from 'svelte/store'
 import { getSimpleLinks } from 'webnative/fs/protocol/basic'
 import { path, CID, Depot, Reference } from 'webnative'
 import type { PublicFile } from 'webnative/fs/v1/PublicFile'
 import { PublicTree } from 'webnative/fs/v1/PublicTree'
 
 import type { Patch } from '$lib/presets'
+import { fileSystemStore } from '$src/stores'
 
 export async function lookupFileSystem(username: string, reference: Reference.Implementation): Promise<CID | null> {
   return await reference.dataRoot.lookup(`ditto-${username}`)
@@ -46,3 +49,33 @@ export async function getPresets(presetsDirectory: PublicTree): Promise<Patch[]>
   )
 }
 
+export async function saveSubscription(username: string): Promise<void> {
+  const fs = getStore(fileSystemStore)
+  const contentPath = webnative.path.file('private', 'subscriptions.json')
+
+  if (await fs.exists(contentPath)) {
+    const subscriptions = JSON.parse(
+      new TextDecoder().decode(
+        await fs?.read(contentPath)
+      )
+    ) as string[]
+
+    // Already subscribed to user
+    if (subscriptions.includes(username)) return
+
+    await fs?.write(contentPath,
+      new TextEncoder().encode(
+        JSON.stringify([ ...subscriptions, username ])
+      )
+    )
+    await fs?.publish()
+
+  } else {
+    await fs?.write(contentPath,
+      new TextEncoder().encode(
+        JSON.stringify([ username ])
+      )
+    )
+    await fs?.publish()
+  }
+}

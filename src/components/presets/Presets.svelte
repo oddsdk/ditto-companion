@@ -36,33 +36,30 @@
     event: { currentTarget: HTMLInputElement },
     preset: Patch
   ) {
-  const checked = event.currentTarget.checked
+    const checked = event.currentTarget.checked
 
-  if (checked) {
-    presetsStore.update(store => ({
-      ...store,
-      collection: {
-        ...store.collection,
-        collected: [...store.collection.collected, preset.id]
-      }
-    }))
+    if (checked) {
+      presetsStore.update(store => ({
+        ...store,
+        collection: {
+          ...store.collection,
+          collected: [...store.collection.collected, preset.id]
+        }
+      }))
 
-    await savePreset(preset)
+      await savePreset(preset)
 
-  } else {
-    presetsStore.update(store => ({
-      ...store,
-      collection: {
-        ...store.collection,
-        collected: store.collection.collected.filter(id => id !== preset.id)
-      }
-    }))
+    } else {
+      presetsStore.update(store => ({
+        ...store,
+        collection: {
+          ...store.collection,
+          collected: store.collection.collected.filter(id => id !== preset.id)
+        }
+      }))
 
-    await deletePreset(preset) 
-
-    
-  }
-
+      await deletePreset(preset)
+    }
   }
 </script>
 
