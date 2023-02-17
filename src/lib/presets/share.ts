@@ -1,9 +1,9 @@
 import * as webnative from 'webnative'
 import { get as getStore } from 'svelte/store'
 
-import { fileSystemStore } from '../../stores'
+import { fileSystemStore, presetsStore } from '../../stores'
 import { PRESETS_DIRS, Visibility } from '$lib/presets/constants'
-import { savePreset, type Patch } from '$lib/presets'
+import { addOrUpdate, savePreset, type Patch } from '$lib/presets'
 
 export const updateVisibility = async (preset: Patch, visibility: Visibility): Promise<void> => {
   const fs = getStore(fileSystemStore)
@@ -17,4 +17,9 @@ export const updateVisibility = async (preset: Patch, visibility: Visibility): P
   preset.visibility = visibility
 
   await savePreset(preset)
+
+  presetsStore.update((state) => ({
+    ...state,
+    presets: addOrUpdate(state.presets, preset).sort((a, b) => a.name.localeCompare(b.name, 'en', { 'sensitivity': 'base' })),
+  }))
 }

@@ -1,7 +1,7 @@
 import * as webnative from 'webnative'
 import { get as getStore } from 'svelte/store'
 
-import { fileSystemStore, presetsStore, sessionStore } from '../../stores'
+import { fileSystemStore, presetsStore } from '../../stores'
 import { PRESETS_DIRS, Visibility } from '$lib/presets/constants'
 
 export type Patch = {
@@ -95,7 +95,7 @@ export const hydratePresetsStore = async (): Promise<void> => {
  * @param arr Patch[]
  * @param element Patch
  */
-const addOrUpdate = (arr: Patch[], element: Patch): Patch[] => {
+export const addOrUpdate = (arr: Patch[], element: Patch): Patch[] => {
   const i = arr.findIndex(_element => _element.id === element.id)
 
   if (i > -1) {
@@ -107,20 +107,6 @@ const addOrUpdate = (arr: Patch[], element: Patch): Patch[] => {
   return arr
 }
 
-export const updateVisibility = async (preset: Patch, visibility: Visibility): Promise<void> => {
-  const fs = getStore(fileSystemStore)
-  const contentPath = webnative.path.combine(PRESETS_DIRS[ preset.visibility ], webnative.path.file(`${preset.id}.json`))
-
-  await fs?.rm(
-    contentPath
-  )
-  await fs.publish()
-
-  preset.visibility = visibility
-
-  await savePreset(preset)
-}
-
 /**
  * Save preset to file system and push it into the presetsStore
  *
@@ -128,7 +114,6 @@ export const updateVisibility = async (preset: Patch, visibility: Visibility): P
  */
 export const savePreset = async (preset: Patch): Promise<void> => {
   const fs = getStore(fileSystemStore)
-  const { username } = getStore(sessionStore)
 
   const contentPath = webnative.path.combine(PRESETS_DIRS[ preset.visibility ], webnative.path.file(`${preset.id}.json`))
 
@@ -137,13 +122,6 @@ export const savePreset = async (preset: Patch): Promise<void> => {
     new TextEncoder().encode(JSON.stringify(preset))
   )
   await fs?.publish()
-
-  if (username.display === preset.creator) {
-    presetsStore.update((state) => ({
-      ...state,
-      presets: addOrUpdate(state.presets, preset).sort((a, b) => a.name.localeCompare(b.name, 'en', { 'sensitivity': 'base' })),
-    }))
-  }
 
   const storedPreset = JSON.parse(new TextDecoder().decode(
     await fs?.read(contentPath)
@@ -164,12 +142,6 @@ export const deletePreset = async (preset: Patch): Promise<void> => {
   await fs?.rm(contentPath)
 
   await fs?.publish()
-
-  // presetsStore.update((state) => ({
-  //   ...state,
-  //   presets: state.presets.filter(({ id }) => id !== preset?.id),
-  //   selectedPatch: DEFAULT_PATCH.id,
-  // }))
 }
 
 /**

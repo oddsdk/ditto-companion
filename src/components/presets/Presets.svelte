@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { deletePreset, savePreset, updateVisibility, type Area, type Patch } from '$lib/presets'
+  import { deletePreset, savePreset, type Area, type Patch } from '$lib/presets'
+  import { updateVisibility } from '$lib/presets/share'
   import { Visibility } from '$lib/presets/constants'
   import { presetsStore } from '$src/stores'
   import PresetsCollect from './PresetsCollect.svelte'
