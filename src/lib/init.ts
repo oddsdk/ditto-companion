@@ -1,10 +1,9 @@
 import * as webnative from 'webnative'
 
 import { dev } from '$app/environment'
-import { fileSystemStore, presetsStore, sessionStore } from '../stores'
+import { fileSystemStore, sessionStore } from '../stores'
 import { webnativeNamespace } from '$lib/app-info'
 import { hydratePresetsStore } from '$lib/presets'
-import { get } from 'svelte/store'
 
 export const initialize = async (): Promise<void> => {
   try {

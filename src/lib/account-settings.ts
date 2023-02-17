@@ -5,7 +5,7 @@ import type { CID } from 'multiformats/cid'
 import type { PuttableUnixTree, File as WNFile } from 'webnative/fs/types'
 import type { Metadata } from 'webnative/fs/metadata'
 
-import { accountSettingsStore, fileSystemStore, sessionStore } from '$src/stores'
+import { accountSettingsStore, fileSystemStore } from '$src/stores'
 import { addNotification } from '$lib/notifications'
 import { fileToUint8Array } from './utils'
 

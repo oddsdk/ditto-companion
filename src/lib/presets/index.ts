@@ -1,7 +1,7 @@
 import * as webnative from 'webnative'
 import { get as getStore } from 'svelte/store'
 
-import { fileSystemStore, presetsStore } from '../../stores'
+import { fileSystemStore, presetsStore, sessionStore } from '../../stores'
 import { PRESETS_DIRS, Visibility } from '$lib/presets/constants'
 
 export type Patch = {
@@ -28,13 +28,18 @@ type Params = {
   mix: never
 }
 
-export const AREAS = ['Share', 'Collect'] as const
-export type Area = typeof AREAS[number]
+export const AREAS = [ 'Share', 'Collect' ] as const
+export type Area = typeof AREAS[ number ]
 
 export type Presets = {
+  collection: {
+    subscriptions: string[] // Usernames
+    presets: Patch[]
+    collected: string[] // Patch ids
+  }
   presets: Patch[]
   selectedArea: Area
-  selectedPatch: string | null 
+  selectedPatch: string | null
 }
 
 
@@ -46,12 +51,12 @@ export type Presets = {
  */
 export const loadFromFilesystem: (visibility: Visibility) => Promise<Patch[]> = async (visibility) => {
   const fs = getStore(fileSystemStore)
-  const directoryExists = await fs?.exists(PRESETS_DIRS[visibility])
+  const directoryExists = await fs?.exists(PRESETS_DIRS[ visibility ])
   if (!directoryExists) {
     return []
   }
 
-  const linksObject = await fs?.ls(PRESETS_DIRS[visibility])
+  const linksObject = await fs?.ls(PRESETS_DIRS[ visibility ])
   if (!linksObject) {
     return []
   }
@@ -59,9 +64,9 @@ export const loadFromFilesystem: (visibility: Visibility) => Promise<Patch[]> = 
   // convert links object to a list
   const links = Object.entries(linksObject)
 
-  const data = await Promise.all(links.map(async ([name, _]) =>
+  const data = await Promise.all(links.map(async ([ name, _ ]) =>
     JSON.parse(new TextDecoder().decode(await fs?.read(
-      webnative.path.combine(PRESETS_DIRS[visibility], webnative.path.file(name))
+      webnative.path.combine(PRESETS_DIRS[ visibility ], webnative.path.file(name))
     ))) as Patch
   ))
 
@@ -75,12 +80,12 @@ export const hydratePresetsStore = async (): Promise<void> => {
   // Merge public and private presets and sort alphabetically by name
   const publicPresets = await loadFromFilesystem(Visibility.public)
   const privatePresets = await loadFromFilesystem(Visibility.private)
-  const presets = [...publicPresets, ...privatePresets].sort((a, b) => a.name.localeCompare(b.name, 'en', {'sensitivity': 'base'}))
+  const presets = [ ...publicPresets, ...privatePresets ].sort((a, b) => a.name.localeCompare(b.name, 'en', { 'sensitivity': 'base' }))
 
   presetsStore.update(store => ({
     ...store,
     presets,
-    selectedPatch: presets[0].id ?? null,
+    selectedPatch: presets[ 0 ].id ?? null,
   }))
 }
 
@@ -94,7 +99,7 @@ const addOrUpdate = (arr: Patch[], element: Patch): Patch[] => {
   const i = arr.findIndex(_element => _element.id === element.id)
 
   if (i > -1) {
-    arr[i] = element
+    arr[ i ] = element
   } else {
     arr.push(element)
   }
@@ -104,7 +109,7 @@ const addOrUpdate = (arr: Patch[], element: Patch): Patch[] => {
 
 export const updateVisibility = async (preset: Patch, visibility: Visibility): Promise<void> => {
   const fs = getStore(fileSystemStore)
-  const contentPath = webnative.path.combine(PRESETS_DIRS[preset.visibility], webnative.path.file(`${preset.id}.json`))
+  const contentPath = webnative.path.combine(PRESETS_DIRS[ preset.visibility ], webnative.path.file(`${preset.id}.json`))
 
   await fs?.rm(
     contentPath
@@ -122,25 +127,49 @@ export const updateVisibility = async (preset: Patch, visibility: Visibility): P
  * @param preset Patch
  */
 export const savePreset = async (preset: Patch): Promise<void> => {
-  const localOnlyFs = getStore(fileSystemStore)
-  const contentPath = webnative.path.combine(PRESETS_DIRS[preset.visibility], webnative.path.file(`${preset.id}.json`))
+  const fs = getStore(fileSystemStore)
+  const { username } = getStore(sessionStore)
 
-  await localOnlyFs?.write(
+  const contentPath = webnative.path.combine(PRESETS_DIRS[ preset.visibility ], webnative.path.file(`${preset.id}.json`))
+
+  await fs?.write(
     contentPath,
     new TextEncoder().encode(JSON.stringify(preset))
   )
-  await localOnlyFs?.publish()
+  await fs?.publish()
 
-  presetsStore.update((state) => ({
-    ...state,
-    presets: addOrUpdate(state.presets, preset).sort((a, b) => a.name.localeCompare(b.name, 'en', {'sensitivity': 'base'})),
-  }))
+  if (username.display === preset.creator) {
+    presetsStore.update((state) => ({
+      ...state,
+      presets: addOrUpdate(state.presets, preset).sort((a, b) => a.name.localeCompare(b.name, 'en', { 'sensitivity': 'base' })),
+    }))
+  }
 
   const storedPreset = JSON.parse(new TextDecoder().decode(
-    await localOnlyFs?.read(contentPath)
+    await fs?.read(contentPath)
   )) as Patch
 
   console.log('saved preset', storedPreset)
+}
+
+/**
+ * Delete preset from the file system and remove it from the preset list
+ *
+ * @param preset Patch
+ */
+export const deletePreset = async (preset: Patch): Promise<void> => {
+  const fs = getStore(fileSystemStore)
+  const contentPath = webnative.path.combine(PRESETS_DIRS[ preset.visibility ], webnative.path.file(`${preset?.id}.json`))
+
+  await fs?.rm(contentPath)
+
+  await fs?.publish()
+
+  // presetsStore.update((state) => ({
+  //   ...state,
+  //   presets: state.presets.filter(({ id }) => id !== preset?.id),
+  //   selectedPatch: DEFAULT_PATCH.id,
+  // }))
 }
 
 /**
@@ -155,9 +184,9 @@ export const storeToFilesystem: (presets: Patch[], visibility: Visibility) => Pr
 
   await Promise.all(presets.map(async preset => {
     await fs?.write(
-      webnative.path.combine(PRESETS_DIRS[visibility], webnative.path.file(`${preset.id}.json`)),
+      webnative.path.combine(PRESETS_DIRS[ visibility ], webnative.path.file(`${preset.id}.json`)),
       new TextEncoder().encode(JSON.stringify(preset))
-      )
+    )
   }))
   await fs?.publish()
 }

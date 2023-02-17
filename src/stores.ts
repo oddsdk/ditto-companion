@@ -29,6 +29,11 @@ export const accountSettingsStore: Writable<AccountSettings> = writable({
 })
 
 export const presetsStore: Writable<Presets> = writable({
+  collection: {
+    subscriptions: [],
+    presets: [],
+    collected: [],
+  },
   presets: [],
   selectedArea: 'Share',
   selectedPatch: null
