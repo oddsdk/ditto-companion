@@ -128,7 +128,11 @@
                     {/each}
                   </div>
                 </td>
-                <td>{preset.notes}</td>
+                <td>
+                  {#if preset.notes}
+                    {preset.notes}
+                  {/if}
+                </td>
                 <th>
                   {#if selectedArea === 'Share'}
                     <label>
