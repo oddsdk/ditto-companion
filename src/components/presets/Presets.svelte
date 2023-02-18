@@ -128,7 +128,11 @@
                 <td>
                   <div class="grid grid-flow-col auto-cols gap-2 justify-start">
                     {#each preset.tags as tag}
-                      <span class="badge badge-ghost badge-sm">{tag}</span>
+                      <span
+                        class="badge badge-tertiary badge-outline badge-sm rounded-full"
+                      >
+                        {tag}
+                      </span>
                     {/each}
                   </div>
                 </td>
