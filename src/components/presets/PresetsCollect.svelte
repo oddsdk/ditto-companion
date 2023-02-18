@@ -82,11 +82,11 @@
 </script>
 
 <div class="modal modal-bottom sm:modal-middle">
-  <div class="modal-box">
+  <div class="grid grid-flow-row auto-rows modal-box justify-center">
     <h3 class="font-bold text-lg">Find Presets</h3>
     <p class="py-4">Enter a username to start collecting their presets.</p>
     <div class="form-control w-full">
-      <label for="" class="label">
+      <label for="" class="label w-full">
         <span class="label-text">Enter a name</span>
       </label>
       <input
@@ -104,7 +104,11 @@
     </div>
 
     <div class="modal-action">
-      <button class="btn btn-md" on:click={closeModal} on:keypress={closeModal}>
+      <button
+        class="btn btn-outline btn-md"
+        on:click={closeModal}
+        on:keypress={closeModal}
+      >
         Cancel
       </button>
     </div>
