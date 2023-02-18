@@ -83,7 +83,7 @@
           on:click={() => (collectModalOpen = true)}
           on:keypress={() => (collectModalOpen = true)}
         >
-          Collect
+          Find Presets
         </button>
         <input
           type="checkbox"
@@ -101,9 +101,9 @@
             <th>Tags</th>
             <th>Notes</th>
             {#if selectedArea === 'Share'}
-              <th>Shared</th>
+              <th>Share</th>
             {:else}
-              <th>Collected</th>
+              <th>Collect</th>
             {/if}
           </tr>
         </thead>

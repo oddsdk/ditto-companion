@@ -83,8 +83,8 @@
 
 <div class="modal modal-bottom sm:modal-middle">
   <div class="modal-box">
-    <h3 class="font-bold text-lg">Collect Presets</h3>
-    <p class="py-4">Enter a username to collect their presets.</p>
+    <h3 class="font-bold text-lg">Find Presets</h3>
+    <p class="py-4">Enter a username to start collecting their presets.</p>
     <div class="form-control w-full">
       <label for="" class="label">
         <span class="label-text">Enter a name</span>
