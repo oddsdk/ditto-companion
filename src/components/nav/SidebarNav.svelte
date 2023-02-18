@@ -1,14 +1,12 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
   import { sessionStore } from '$src/stores'
-  import AlphaTag from '$components/nav/AlphaTag.svelte'
-  import BrandLogo from '$components/icons/BrandLogo.svelte'
-  import BrandWordmark from '$components/icons/BrandWordmark.svelte'
   import Disconnect from '$components/icons/Disconnect.svelte'
   import Home from '$components/icons/Home.svelte'
   import PhotoGallery from '$components/icons/PhotoGallery.svelte'
   import Settings from '$components/icons/Settings.svelte'
   import NavItem from '$components/nav/NavItem.svelte'
+  import Brand from './Brand.svelte'
 
   const navItemsUpper = [
     {
@@ -73,9 +71,7 @@
             goto('/')
           }}
         >
-          <BrandLogo />
-          <BrandWordmark />
-          <AlphaTag />
+          <Brand />
         </div>
 
         <!-- Upper Menu -->
