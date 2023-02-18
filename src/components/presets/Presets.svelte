@@ -76,8 +76,8 @@
 
 <section
   class="overflow-hidden {$themeStore.selectedTheme === 'light'
-    ? 'text-gray-700'
-    : 'text-gray-300'}"
+    ? 'text-gray-800'
+    : 'text-gray-200'}"
 >
   <div class="pt-8 p-6 md:p-8 w-full justify-start">
     <div class="overflow-x-auto w-full">
@@ -100,14 +100,14 @@
       <table class="table table-compact w-full">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Designer</th>
-            <th>Tags</th>
-            <th>Notes</th>
+            <th class="bg-base-content text-base-100">Name</th>
+            <th class="bg-base-content text-base-100">Designer</th>
+            <th class="bg-base-content text-base-100">Tags</th>
+            <th class="bg-base-content text-base-100">Notes</th>
             {#if selectedArea === 'Share'}
-              <th>Share</th>
+              <th class="bg-base-content text-base-100">Share</th>
             {:else}
-              <th>Collect</th>
+              <th class="bg-base-content text-base-100">Collect</th>
             {/if}
           </tr>
         </thead>
