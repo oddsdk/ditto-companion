@@ -3,7 +3,7 @@
   import { hyrdratePresetsCollection } from '$lib/presets/collect'
   import { updateVisibility } from '$lib/presets/share'
   import { Visibility } from '$lib/presets/constants'
-  import { presetsStore, sessionStore } from '$src/stores'
+  import { presetsStore, sessionStore, themeStore } from '$src/stores'
   import PresetsCollect from './PresetsCollect.svelte'
 
   const { depot, reference } = $sessionStore.program.components
@@ -74,7 +74,11 @@
   init()
 </script>
 
-<section class="overflow-hidden text-gray-700">
+<section
+  class="overflow-hidden {$themeStore.selectedTheme === 'light'
+    ? 'text-gray-700'
+    : 'text-gray-300'}"
+>
   <div class="pt-8 p-6 md:p-8 w-full justify-start">
     <div class="overflow-x-auto w-full">
       {#if selectedArea === 'Collect'}
