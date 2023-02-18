@@ -134,7 +134,9 @@
                 </td>
                 <td>
                   {#if preset.notes}
-                    {preset.notes}
+                    <div class="w-96 truncate">
+                      {preset.notes}
+                    </div>
                   {/if}
                 </td>
                 <th>
