@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { deletePreset, savePreset, type Area, type Patch } from '$lib/presets'
+  import { deletePreset, hydratePresetsStore, savePreset, type Area, type Patch } from '$lib/presets'
   import { hyrdratePresetsCollection } from '$lib/presets/collect'
   import { updateVisibility } from '$lib/presets/share'
   import { Visibility } from '$lib/presets/constants'
@@ -68,6 +68,7 @@
   async function init() {
     const userPresets = $presetsStore.presets
 
+    await hydratePresetsStore()
     await hyrdratePresetsCollection(userPresets, depot, reference)
   }
 
