@@ -46,7 +46,7 @@
     </div>
 
     <PresetsContainer>
-      <Presets />
+      <Presets on:subscribe={() => handleChangeTab('Collect')} />
     </PresetsContainer>
   {/if}
 </div>

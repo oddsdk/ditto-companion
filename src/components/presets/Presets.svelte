@@ -74,29 +74,36 @@
   init()
 </script>
 
+<div
+  class="grid grid-flow-col w-44 justify-start translate-x-[86.7rem] -translate-y-1/2 "
+>
+  <div
+    class="tabs mr-8 border-2 overflow-hidden border-base-content rounded-lg"
+  >
+    <button
+      on:click={() => (collectModalOpen = true)}
+      on:keypress={() => (collectModalOpen = true)}
+      class="tab btn-primary h-10 font-bold text-sm ease-in bg-primary"
+    >
+      Find Presets
+    </button>
+  </div>
+</div>
+<input
+  type="checkbox"
+  id="collect"
+  class="modal-toggle"
+  bind:checked={collectModalOpen}
+/>
+<PresetsCollect on:close={() => (collectModalOpen = false)} on:subscribe />
+
 <section
   class="overflow-hidden {$themeStore.selectedTheme === 'light'
     ? 'text-gray-800'
     : 'text-gray-200'}"
 >
-  <div class="pt-8 p-6 md:p-8 w-full justify-start">
+  <div class="px-6 md:px-8 pb-6 w-full justify-start">
     <div class="overflow-x-auto w-full">
-      {#if selectedArea === 'Collect'}
-        <button
-          class="btn btn-primary w-full mb-4"
-          on:click={() => (collectModalOpen = true)}
-          on:keypress={() => (collectModalOpen = true)}
-        >
-          Find Presets
-        </button>
-        <input
-          type="checkbox"
-          id="collect"
-          class="modal-toggle"
-          bind:checked={collectModalOpen}
-        />
-        <PresetsCollect on:close={() => (collectModalOpen = false)} />
-      {/if}
       <table class="table table-compact w-full">
         <thead>
           <tr>

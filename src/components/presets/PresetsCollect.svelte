@@ -64,6 +64,7 @@
 
           await collect.saveSubscription(username)
 
+          dispatch('subscribe')
           addNotification(`Added presets from ${username}`)
           closeModal()
         } else {
