@@ -6,7 +6,7 @@
   import PhotoGallery from '$components/icons/PhotoGallery.svelte'
   import Settings from '$components/icons/Settings.svelte'
   import NavItem from '$components/nav/NavItem.svelte'
-  import Brand from './Brand.svelte'
+  import Logo from '$components/icons/Logo.svelte'
 
   const navItemsUpper = [
     {
@@ -65,13 +65,13 @@
       <div class="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
         <!-- Brand -->
         <div
-          class="flex items-center gap-3 cursor-pointer mb-8"
+          class="flex items-center cursor-pointer mb-8 pl-1"
           on:click={() => {
             handleCloseDrawer()
             goto('/')
           }}
         >
-          <Brand />
+          <Logo />
         </div>
 
         <!-- Upper Menu -->

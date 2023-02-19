@@ -6,7 +6,7 @@
   import DarkMode from '$components/icons/DarkMode.svelte'
   import Hamburger from '$components/icons/Hamburger.svelte'
   import LightMode from '$components/icons/LightMode.svelte'
-  import Brand from './nav/Brand.svelte'
+  import Logo from './icons/Logo.svelte'
 
   const setTheme = (newTheme: ThemeOptions) => {
     localStorage.setItem(DEFAULT_THEME_KEY, 'false')
@@ -34,7 +34,7 @@
         on:click={() => goto('/')}
         on:keypress={() => goto('/')}
       >
-        <Brand />
+        <Logo />
       </div>
     {/if}
   </div>
@@ -45,7 +45,7 @@
       on:click={() => goto('/')}
       on:keypress={() => goto('/')}
     >
-      <Brand />
+      <Logo />
     </div>
   {/if}
 
