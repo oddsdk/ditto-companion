@@ -4,21 +4,27 @@
   import { createEventDispatcher, onDestroy } from 'svelte'
   import { presetsStore, sessionStore } from '$src/stores'
   import { addNotification } from '$lib/notifications'
+  import LoadingSpinner from '$components/common/LoadingSpinner.svelte'
+
+  type View = 'lookup' | 'scanning' | 'no-presets'
 
   const { depot, reference } = $sessionStore.program.components
+  let view: View = 'lookup'
   let errorMessage: string | null = null
   let subscriptions: string[] = []
   let username = ''
 
   const dispatch = createEventDispatcher()
 
-  const debouncedLookupFileSystem = asyncDebounce(collect.lookupFileSystem, 500)
+  const debouncedLookupFileSystem = asyncDebounce(collect.lookupFileSystem, 400)
 
   const unsubscribePresetsStore = presetsStore.subscribe(store => {
     subscriptions = store.collection.subscriptions
   })
 
   async function handleUsername(event: { currentTarget: HTMLInputElement }) {
+    errorMessage = null
+
     username = event.currentTarget.value
     if (username.length === 0) return
 
@@ -27,16 +33,16 @@
       return
     }
 
-    errorMessage = null
+    const cid = await debouncedLookupFileSystem(username, reference)
 
     if (subscriptions.includes(username)) {
       errorMessage = `You are already collecting presets from ${username}`
       return
     }
 
-    const cid = await debouncedLookupFileSystem(username, reference)
-
     if (cid) {
+      view = 'scanning'
+
       const presetsDirectory = await collect.getPresetsDirectory(
         cid,
         depot,
@@ -58,13 +64,14 @@
 
           await collect.saveSubscription(username)
 
+          dispatch('subscribe')
           addNotification(`Added presets from ${username}`)
           closeModal()
         } else {
-          errorMessage = `${username} does not share presets. Tell them they should hop on this Ditto train! 🚂`
+          view = 'no-presets'
         }
       } else {
-        errorMessage = `${username} does not share presets. Tell them they should hop on this Ditto train! 🚂`
+        view = 'no-presets'
       }
     } else {
       errorMessage = `Could not find a user named ${username}`
@@ -74,6 +81,7 @@
   function closeModal() {
     username = ''
     errorMessage = null
+    view = 'lookup'
 
     dispatch('close')
   }
@@ -82,30 +90,52 @@
 </script>
 
 <div class="modal modal-bottom sm:modal-middle">
-  <div class="modal-box">
-    <h3 class="font-bold text-lg">Collect Presets</h3>
-    <p class="py-4">Enter a username to collect their presets.</p>
-    <div class="form-control w-full">
-      <label for="" class="label">
-        <span class="label-text">Enter a name</span>
-      </label>
-      <input
-        type="text"
-        placeholder="Type here"
-        class="input input-bordered w-full max-w-xs"
-        bind:value={username}
-        on:input={handleUsername}
-      />
-      <label for="" class="label">
-        {#if errorMessage}
-          <span class="label-text text-error">{errorMessage}</span>
-        {/if}
-      </label>
-    </div>
+  <div
+    class="modal-box grid grid-flow-row auto-rows grid-cols-1 justify-center"
+  >
+    <h3 class="font-bold text-lg">Find Presets</h3>
+    {#if view === 'lookup'}
+      <div class="grid form-control justify-items-center">
+        <p class="text-base py-4">
+          Enter the name of a Ditto user to start collecting their presets.
+        </p>
+        <div class="grid grid-cols-1 w-5/6 justify-items-center">
+          <input
+            type="text"
+            placeholder="Username"
+            class="input input-bordered w-full max-w-xs"
+            bind:value={username}
+            on:input={handleUsername}
+          />
+        </div>
+        <label for="" class="label">
+          {#if errorMessage}
+            <span class="label-text">{errorMessage}</span>
+          {/if}
+        </label>
+      </div>
+    {:else if view === 'scanning'}
+      <p class="py-4 text-base w-full">Searching for {username}'s presets.</p>
+      <div class="grid grid-flow-row auto-rows w-full justify-center">
+        <LoadingSpinner />
+      </div>
+    {:else if view === 'no-presets'}
+      <p class="py-4 text-base w-full">
+        {username} has not shared any presets.
+      </p>
+    {/if}
 
     <div class="modal-action">
-      <button class="btn btn-md" on:click={closeModal} on:keypress={closeModal}>
-        Cancel
+      <button
+        class="btn btn-outline btn-md"
+        on:click={closeModal}
+        on:keypress={closeModal}
+      >
+        {#if view === 'no-presets'}
+          Close
+        {:else}
+          Cancel
+        {/if}
       </button>
     </div>
   </div>

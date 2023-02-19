@@ -1,14 +1,12 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
   import { sessionStore } from '$src/stores'
-  import AlphaTag from '$components/nav/AlphaTag.svelte'
-  import BrandLogo from '$components/icons/BrandLogo.svelte'
-  import BrandWordmark from '$components/icons/BrandWordmark.svelte'
   import Disconnect from '$components/icons/Disconnect.svelte'
   import Home from '$components/icons/Home.svelte'
   import PhotoGallery from '$components/icons/PhotoGallery.svelte'
   import Settings from '$components/icons/Settings.svelte'
   import NavItem from '$components/nav/NavItem.svelte'
+  import Logo from '$components/icons/Logo.svelte'
 
   const navItemsUpper = [
     {
@@ -67,15 +65,13 @@
       <div class="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
         <!-- Brand -->
         <div
-          class="flex items-center gap-3 cursor-pointer mb-8"
+          class="flex items-center cursor-pointer mb-8 pl-1"
           on:click={() => {
             handleCloseDrawer()
             goto('/')
           }}
         >
-          <BrandLogo />
-          <BrandWordmark />
-          <AlphaTag />
+          <Logo />
         </div>
 
         <!-- Upper Menu -->

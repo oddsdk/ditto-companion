@@ -149,8 +149,10 @@ export async function hyrdratePresetsCollection(
     }
   }))
 
-  await Promise.all(
+  const collections = await Promise.all(
     subscriptions.map(async subscription => {
+      console.log('subscribed to', subscription)
+
       // Get presets by subscription
       const cid = await lookupFileSystem(subscription, reference)
       const presetsDirectory = await getPresetsDirectory(cid, depot, reference)
@@ -161,20 +163,28 @@ export async function hyrdratePresetsCollection(
       const presetIds = userPresets.map(p => p.id)
       const collectedIds = collectablePresetIds.filter(id => presetIds.includes(id))
 
-      presetsStore.update(store => {
-        // Deduplicate before adding to store
-        const presets = store.collection.presets.filter(preset => collectablePresets.includes(preset)).concat(collectablePresets)
-        const collected = store.collection.collected.filter(id => collectedIds.includes(id)).concat(collectedIds)
-
-        return ({
-          ...store,
-          collection: {
-            ...store.collection,
-            presets: presets.sort((a, b) => a.name.localeCompare(b.name, 'en', { 'sensitivity': 'base' })),
-            collected
-          }
-        })
-      })
+      return { collectablePresets, collectedIds }
     })
   )
+
+  const collection = collections.reduce((acc, curr) => ({
+    collectablePresets: acc.collectablePresets.concat(curr.collectablePresets),
+    collectedIds: acc.collectedIds.concat(curr.collectedIds)
+  }),
+    { collectablePresets: [], collectedIds: [] }
+  )
+
+  // Remove duplicate presets and ids
+  const collectablePresetIds = collection.collectablePresets.map(p => p.id)
+  const presets = collection.collectablePresets.filter(({ id }, index) => !collectablePresetIds.includes(id, index + 1))
+  const collected = Array.from(new Set(collection.collectedIds))
+
+  presetsStore.update(store => ({
+    ...store,
+    collection: {
+      ...store.collection,
+      presets: presets.sort((a, b) => a.name.localeCompare(b.name, 'en', { 'sensitivity': 'base' })),
+      collected
+    }
+  }))
 }

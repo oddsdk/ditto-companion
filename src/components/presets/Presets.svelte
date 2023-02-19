@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { deletePreset, savePreset, type Area, type Patch } from '$lib/presets'
+  import { deletePreset, hydratePresetsStore, savePreset, type Area, type Patch } from '$lib/presets'
   import { hyrdratePresetsCollection } from '$lib/presets/collect'
   import { updateVisibility } from '$lib/presets/share'
   import { Visibility } from '$lib/presets/constants'
-  import { presetsStore, sessionStore } from '$src/stores'
+  import { presetsStore, sessionStore, themeStore } from '$src/stores'
   import PresetsCollect from './PresetsCollect.svelte'
 
   const { depot, reference } = $sessionStore.program.components
@@ -68,42 +68,54 @@
   async function init() {
     const userPresets = $presetsStore.presets
 
+    await hydratePresetsStore()
     await hyrdratePresetsCollection(userPresets, depot, reference)
   }
 
   init()
 </script>
 
-<section class="overflow-hidden text-gray-700">
-  <div class="pt-8 p-6 md:p-8 w-full justify-start">
+<div
+  class="grid grid-flow-col w-44 justify-start translate-x-[86.7rem] -translate-y-1/2 "
+>
+  <div
+    class="tabs mr-8 border-2 overflow-hidden border-base-content rounded-lg"
+  >
+    <button
+      on:click={() => (collectModalOpen = true)}
+      on:keypress={() => (collectModalOpen = true)}
+      class="tab btn-primary h-10 font-bold text-sm ease-in bg-primary"
+    >
+      Find Presets
+    </button>
+  </div>
+</div>
+<input
+  type="checkbox"
+  id="collect"
+  class="modal-toggle"
+  bind:checked={collectModalOpen}
+/>
+<PresetsCollect on:close={() => (collectModalOpen = false)} on:subscribe />
+
+<section
+  class="overflow-hidden {$themeStore.selectedTheme === 'light'
+    ? 'text-gray-800'
+    : 'text-gray-200'}"
+>
+  <div class="px-6 md:px-8 pb-6 w-full justify-start">
     <div class="overflow-x-auto w-full">
-      {#if selectedArea === 'Collect'}
-        <button
-          class="btn btn-primary w-full mb-4"
-          on:click={() => (collectModalOpen = true)}
-          on:keypress={() => (collectModalOpen = true)}
-        >
-          Collect
-        </button>
-        <input
-          type="checkbox"
-          id="collect"
-          class="modal-toggle"
-          bind:checked={collectModalOpen}
-        />
-        <PresetsCollect on:close={() => (collectModalOpen = false)} />
-      {/if}
       <table class="table table-compact w-full">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Designer</th>
-            <th>Tags</th>
-            <th>Notes</th>
+            <th class="bg-base-content text-base-100">Name</th>
+            <th class="bg-base-content text-base-100">Designer</th>
+            <th class="bg-base-content text-base-100">Tags</th>
+            <th class="bg-base-content text-base-100">Notes</th>
             {#if selectedArea === 'Share'}
-              <th>Shared</th>
+              <th class="bg-base-content text-base-100">Share</th>
             {:else}
-              <th>Collected</th>
+              <th class="bg-base-content text-base-100">Collect</th>
             {/if}
           </tr>
         </thead>
@@ -124,11 +136,21 @@
                 <td>
                   <div class="grid grid-flow-col auto-cols gap-2 justify-start">
                     {#each preset.tags as tag}
-                      <span class="badge badge-ghost badge-sm">{tag}</span>
+                      <span
+                        class="badge badge-tertiary badge-outline badge-sm rounded-full"
+                      >
+                        {tag}
+                      </span>
                     {/each}
                   </div>
                 </td>
-                <td>{preset.notes}</td>
+                <td>
+                  {#if preset.notes}
+                    <div class="w-96 truncate">
+                      {preset.notes}
+                    </div>
+                  {/if}
+                </td>
                 <th>
                   {#if selectedArea === 'Share'}
                     <label>
