@@ -6,7 +6,7 @@
   import DarkMode from '$components/icons/DarkMode.svelte'
   import Hamburger from '$components/icons/Hamburger.svelte'
   import LightMode from '$components/icons/LightMode.svelte'
-  import Logo from './icons/Logo.svelte'
+  import Logo from '$components/icons/Logo.svelte'
 
   const setTheme = (newTheme: ThemeOptions) => {
     localStorage.setItem(DEFAULT_THEME_KEY, 'false')
