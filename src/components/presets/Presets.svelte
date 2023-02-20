@@ -1,10 +1,13 @@
 <script lang="ts">
+  import { fly } from 'svelte/transition'
+
   import { deletePreset, hydratePresetsStore, savePreset, type Area, type Patch } from '$lib/presets'
   import { hyrdratePresetsCollection } from '$lib/presets/collect'
   import { updateVisibility } from '$lib/presets/share'
   import { Visibility } from '$lib/presets/constants'
   import { presetsStore, sessionStore, themeStore } from '$src/stores'
-  import PresetsCollect from './PresetsCollect.svelte'
+  import PresetsCollect from '$components/presets/PresetsCollect.svelte'
+  import Plus from '$components/icons/Plus.svelte'
 
   const { depot, reference } = $sessionStore.program.components
   const username = $sessionStore.username.display
@@ -78,21 +81,6 @@
   init()
 </script>
 
-<div
-  class="grid grid-flow-col w-44 justify-start translate-x-[86.7rem] -translate-y-1/2 "
->
-  <div
-    class="tabs mr-8 border-2 overflow-hidden border-base-content rounded-lg"
-  >
-    <button
-      on:click={() => (collectModalOpen = true)}
-      on:keypress={() => (collectModalOpen = true)}
-      class="tab btn-primary h-10 font-bold text-sm ease-in bg-primary"
-    >
-      Find Presets
-    </button>
-  </div>
-</div>
 <input
   type="checkbox"
   id="collect"
@@ -106,7 +94,7 @@
     ? 'text-gray-800'
     : 'text-gray-200'}"
 >
-  <div class="px-6 md:px-8 pb-6 w-full justify-start">
+  <div class="p-6 md:p-8 pb-6 w-full justify-start">
     <div class="overflow-x-auto w-full">
       <table class="table table-compact w-full">
         <thead>
@@ -182,6 +170,14 @@
           {/if}
         </tbody>
       </table>
+      <button
+        on:click={() => (collectModalOpen = true)}
+        on:keypress={() => (collectModalOpen = true)}
+        in:fly={{ y: 20, duration: 400 }}
+        class="btn btn-primary btn-2xl hover:scale-105 duration-250 ease-in-out rounded-lg absolute right-4 bottom-20 right-10"
+      >
+        <Plus />
+      </button>
     </div>
   </div>
 </section>
