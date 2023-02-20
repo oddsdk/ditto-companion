@@ -79,9 +79,13 @@
   }
 
   function closeModal() {
-    username = ''
     errorMessage = null
-    view = 'lookup'
+
+    // Not ideal, but delays until modal is not visibile
+    setTimeout(() => {
+      username = ''
+      view = 'lookup'
+    }, 200)
 
     dispatch('close')
   }
