@@ -170,14 +170,14 @@
           {/if}
         </tbody>
       </table>
-      <button
-        on:click={() => (collectModalOpen = true)}
-        on:keypress={() => (collectModalOpen = true)}
-        in:fly={{ y: 20, duration: 400 }}
-        class="btn btn-primary btn-2xl hover:scale-105 duration-250 ease-in-out rounded-lg absolute right-4 bottom-20 right-10"
-      >
-        <Plus />
-      </button>
     </div>
+    <button
+      on:click={() => (collectModalOpen = true)}
+      on:keypress={() => (collectModalOpen = true)}
+      in:fly={{ y: 20, duration: 400 }}
+      class="btn btn-primary btn-2xl hover:scale-105 duration-250 ease-in-out rounded-lg absolute bottom-20 right-10"
+    >
+      <Plus />
+    </button>
   </div>
 </section>
