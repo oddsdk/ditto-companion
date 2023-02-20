@@ -14,9 +14,8 @@
   let subscriptions: string[] = []
   let username = ''
 
+  const debouncedLookupFileSystem = asyncDebounce(collect.lookupFileSystem, 500)
   const dispatch = createEventDispatcher()
-
-  const debouncedLookupFileSystem = asyncDebounce(collect.lookupFileSystem, 400)
 
   const unsubscribePresetsStore = presetsStore.subscribe(store => {
     subscriptions = store.collection.subscriptions
@@ -34,6 +33,11 @@
     }
 
     const cid = await debouncedLookupFileSystem(username, reference)
+
+    if (!cid) {
+      errorMessage = `Could not find a user named ${username}`
+      return
+    }
 
     if (subscriptions.includes(username)) {
       errorMessage = `You are already collecting presets from ${username}`
@@ -73,15 +77,17 @@
       } else {
         view = 'no-presets'
       }
-    } else {
-      errorMessage = `Could not find a user named ${username}`
     }
   }
 
   function closeModal() {
-    username = ''
     errorMessage = null
-    view = 'lookup'
+
+    // Not ideal, but delays until modal is not visibile
+    setTimeout(() => {
+      username = ''
+      view = 'lookup'
+    }, 200)
 
     dispatch('close')
   }
