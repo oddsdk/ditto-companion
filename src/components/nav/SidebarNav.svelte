@@ -70,6 +70,10 @@
             handleCloseDrawer()
             goto('/')
           }}
+          on:keypress={() => {
+            handleCloseDrawer()
+            goto('/')
+          }}
         >
           <Logo />
         </div>
