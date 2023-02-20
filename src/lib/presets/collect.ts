@@ -151,7 +151,6 @@ export async function hyrdratePresetsCollection(
 
   const collections = await Promise.all(
     subscriptions.map(async subscription => {
-      console.log('subscribed to', subscription)
 
       // Get presets by subscription
       const cid = await lookupFileSystem(subscription, reference)
