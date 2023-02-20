@@ -50,6 +50,9 @@
         }
       }))
 
+      // Unfavorite preset on collection
+      preset.favorite = false
+
       await savePreset(preset)
 
     } else {
