@@ -11,10 +11,32 @@
   <h1 class="text-xl">Welcome to {appName}</h1>
 
   <div class="grid grid-flow-row auto-rows max-w-[650px] gap-3">
-    <p>Ditto companion is an app for managing and collecting Ditto presets.</p>
+    <p>Ditto companion is an app for sharing and collecting Ditto presets.</p>
 
     <p>
       Connect with the Ditto plugin by selecting <Share /> in the plugin interface.
+    </p>
+    <img src="plugin.png" alt="Ditto plugin" />
+    <p>
+      <a
+        class="link link-tertiary"
+        href="https://github.com/webnative-examples/ditto"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Ditto
+      </a>
+      and
+      <a
+        class="link link-tertiary"
+        href="https://github.com/webnative-examples/ditto-companion"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Ditto Companion
+      </a>
+      are hackathon software created by the Webnative team. See the project repositories
+      to try them out.
     </p>
   </div>
 
