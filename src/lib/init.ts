@@ -1,14 +1,14 @@
-import * as webnative from 'webnative'
+import * as odd from '@oddjs/odd'
 
 import { dev } from '$app/environment'
 import { fileSystemStore, sessionStore } from '../stores'
-import { webnativeNamespace } from '$lib/app-info'
+import { oddNamespace } from '$lib/app-info'
 import { hydratePresetsStore } from '$lib/presets'
 
 export const initialize = async (): Promise<void> => {
   try {
-    const program: webnative.Program = await webnative.program({
-      namespace: webnativeNamespace,
+    const program: odd.Program = await odd.program({
+      namespace: oddNamespace,
       debug: dev
     })
 
@@ -46,7 +46,7 @@ export const initialize = async (): Promise<void> => {
     console.error(error)
 
     switch (error) {
-      case webnative.ProgramError.InsecureContext:
+      case odd.ProgramError.InsecureContext:
         sessionStore.update(session => ({
           ...session,
           loading: false,
@@ -54,7 +54,7 @@ export const initialize = async (): Promise<void> => {
         }))
         break
 
-      case webnative.ProgramError.UnsupportedBrowser:
+      case odd.ProgramError.UnsupportedBrowser:
         sessionStore.update(session => ({
           ...session,
           loading: false,

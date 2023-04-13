@@ -13,22 +13,24 @@
 
   <img
     class="relative z-0 w-[227px] h-[227px] rounded-full border-[16px] border-base-content"
-    src={`${window.location.origin}/wn-404.gif`}
+    src={`${window.location.origin}/odd-404.gif`}
     alt={`Circle animation`}
   />
 
   <div class="flex items-center justify-between gap-6">
     <a
       class="flex items-center justify-center gap-2 font-bold text-sm text-base-content"
-      href="https://guide.fission.codes/"
+      href="https://docs.odd.dev/"
       target="_blank"
+      rel="noreferrer"
     >
       Docs <ExternalLink />
     </a>
     <a
       class="flex items-center justify-center gap-2 font-bold text-sm text-base-content"
-      href="https://github.com/webnative-examples/"
+      href="https://github.com/oddsdk/"
       target="_blank"
+      rel="noreferrer"
     >
       Github <Github />
     </a>
@@ -36,6 +38,7 @@
       class="flex items-center justify-center gap-2 font-bold text-sm text-base-content"
       href="https://fission.codes/discord"
       target="_blank"
+      rel="noreferrer"
     >
       Discord <Discord />
     </a>

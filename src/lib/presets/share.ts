@@ -1,4 +1,4 @@
-import * as webnative from 'webnative'
+import * as odd from '@oddjs/odd'
 import { get as getStore } from 'svelte/store'
 
 import { fileSystemStore, presetsStore } from '../../stores'
@@ -13,7 +13,7 @@ import { addOrUpdate, savePreset, type Patch } from '$lib/presets'
 */
 export const updateVisibility = async (preset: Patch, visibility: Visibility): Promise<void> => {
   const fs = getStore(fileSystemStore)
-  const contentPath = webnative.path.combine(PRESETS_DIRS[ preset.visibility ], webnative.path.file(`${preset.id}.json`))
+  const contentPath = odd.path.combine(PRESETS_DIRS[ preset.visibility ], odd.path.file(`${preset.id}.json`))
 
   await fs?.rm(
     contentPath
