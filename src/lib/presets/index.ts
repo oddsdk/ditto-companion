@@ -1,4 +1,4 @@
-import * as webnative from 'webnative'
+import * as odd from '@oddjs/odd'
 import { get as getStore } from 'svelte/store'
 
 import { fileSystemStore, presetsStore } from '../../stores'
@@ -66,7 +66,7 @@ export const loadFromFilesystem: (visibility: Visibility) => Promise<Patch[]> = 
 
   const data = await Promise.all(links.map(async ([ name, _ ]) =>
     JSON.parse(new TextDecoder().decode(await fs?.read(
-      webnative.path.combine(PRESETS_DIRS[ visibility ], webnative.path.file(name))
+      odd.path.combine(PRESETS_DIRS[ visibility ], odd.path.file(name))
     ))) as Patch
   ))
 
@@ -114,7 +114,7 @@ export const addOrUpdate = (arr: Patch[], element: Patch): Patch[] => {
 export const savePreset = async (preset: Patch): Promise<void> => {
   const fs = getStore(fileSystemStore)
 
-  const contentPath = webnative.path.combine(PRESETS_DIRS[ preset.visibility ], webnative.path.file(`${preset.id}.json`))
+  const contentPath = odd.path.combine(PRESETS_DIRS[ preset.visibility ], odd.path.file(`${preset.id}.json`))
 
   await fs?.write(
     contentPath,
@@ -136,7 +136,7 @@ export const savePreset = async (preset: Patch): Promise<void> => {
  */
 export const deletePreset = async (preset: Patch): Promise<void> => {
   const fs = getStore(fileSystemStore)
-  const contentPath = webnative.path.combine(PRESETS_DIRS[ preset.visibility ], webnative.path.file(`${preset?.id}.json`))
+  const contentPath = odd.path.combine(PRESETS_DIRS[ preset.visibility ], odd.path.file(`${preset?.id}.json`))
 
   await fs?.rm(contentPath)
 
@@ -155,7 +155,7 @@ export const storeToFilesystem: (presets: Patch[], visibility: Visibility) => Pr
 
   await Promise.all(presets.map(async preset => {
     await fs?.write(
-      webnative.path.combine(PRESETS_DIRS[ visibility ], webnative.path.file(`${preset.id}.json`)),
+      odd.path.combine(PRESETS_DIRS[ visibility ], odd.path.file(`${preset.id}.json`)),
       new TextEncoder().encode(JSON.stringify(preset))
     )
   }))

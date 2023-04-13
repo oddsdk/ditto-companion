@@ -2,14 +2,14 @@
 
 Ditto companion is an app for sharing and collecting Ditto plugin presets.
 
-See the [Ditto repository](https://github.com/webnative-examples/ditto) for the Ditto plugin.
+See the [Ditto repository](https://github.com/oddsdk/ditto) for the Ditto plugin.
 
 ### Get Started
 
 1. Clone the repository:
 
     ```shell
-    git clone git@github.com:webnative-examples/webnative-app-template.git
+    git clone https://github.com/oddsdk/ditto-companion
     ```
 
 2. Install the dependencies.
@@ -38,9 +38,7 @@ The build outputs the static site to the `build` directory.
 
 ### Fission App Hosting
 
-Try out [Webnative App Template on Fission](https://webnative-template.fission.app)
-
-A Webnative application can be published to IPFS with the [Fission CLI](https://guide.fission.codes/developers/cli) or the [Fission GitHub publish action](https://github.com/fission-suite/publish-action).
+An ODD SDK application can be published to IPFS with the [Fission CLI](https://guide.fission.codes/developers/cli) or the [Fission GitHub publish action](https://github.com/fission-suite/publish-action).
 
 **To publish with the Fission CLI:**
 

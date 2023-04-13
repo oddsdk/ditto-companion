@@ -1,4 +1,4 @@
-import * as webnative from 'webnative'
+import * as odd from '@oddjs/odd'
 
 export enum Visibility {
   public,
@@ -6,6 +6,6 @@ export enum Visibility {
 }
 
 export const PRESETS_DIRS = {
-  [ Visibility.public ]: webnative.path.directory('public', 'presets'),
-  [ Visibility.private ]: webnative.path.directory('private', 'presets')
+  [ Visibility.public ]: odd.path.directory('public', 'presets'),
+  [ Visibility.private ]: odd.path.directory('private', 'presets')
 }

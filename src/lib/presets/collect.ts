@@ -1,9 +1,9 @@
-import * as webnative from 'webnative'
+import * as odd from '@oddjs/odd'
 import { get as getStore } from 'svelte/store'
-import { getSimpleLinks } from 'webnative/fs/protocol/basic'
-import { path, CID, Depot, Reference } from 'webnative'
-import type { PublicFile } from 'webnative/fs/v1/PublicFile'
-import { PublicTree } from 'webnative/fs/v1/PublicTree'
+import { getSimpleLinks } from '@oddjs/odd/fs/protocol/basic'
+import { path, CID, Depot, Reference } from '@oddjs/odd'
+import type { PublicFile } from '@oddjs/odd/fs/v1/PublicFile'
+import { PublicTree } from '@oddjs/odd/fs/v1/PublicTree'
 
 import type { Patch } from '$lib/presets'
 import { fileSystemStore, presetsStore } from '$src/stores'
@@ -77,7 +77,7 @@ export async function getPresets(presetsDirectory: PublicTree): Promise<Patch[]>
  */
 export async function saveSubscription(username: string): Promise<void> {
   const fs = getStore(fileSystemStore)
-  const contentPath = webnative.path.file('private', 'subscriptions.json')
+  const contentPath = odd.path.file('private', 'subscriptions.json')
 
   if (await fs.exists(contentPath)) {
     const subscriptions = JSON.parse(
@@ -113,7 +113,7 @@ export async function saveSubscription(username: string): Promise<void> {
  */
 export async function getSubscriptions(): Promise<string[]> {
   const fs = getStore(fileSystemStore)
-  const contentPath = webnative.path.file('private', 'subscriptions.json')
+  const contentPath = odd.path.file('private', 'subscriptions.json')
 
   if (await fs.exists(contentPath)) {
     return JSON.parse(

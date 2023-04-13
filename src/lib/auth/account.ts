@@ -1,7 +1,7 @@
 import * as uint8arrays from 'uint8arrays'
-import { sha256 } from 'webnative/components/crypto/implementation/browser'
-import { publicKeyToDid } from 'webnative/did/transformers'
-import type { Crypto } from 'webnative'
+import { sha256 } from '@oddjs/odd/components/crypto/implementation/browser'
+import { publicKeyToDid } from '@oddjs/odd/did/transformers'
+import type { Crypto } from '@oddjs/odd'
 import { get as getStore } from 'svelte/store'
 
 import { asyncDebounce } from '$lib/utils'

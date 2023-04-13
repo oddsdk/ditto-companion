@@ -20,7 +20,7 @@
     <p>
       <a
         class="link link-tertiary"
-        href="https://github.com/webnative-examples/ditto"
+        href="https://github.com/oddsdk/ditto"
         target="_blank"
         rel="noreferrer"
       >
@@ -29,13 +29,13 @@
       and
       <a
         class="link link-tertiary"
-        href="https://github.com/webnative-examples/ditto-companion"
+        href="https://github.com/oddsdk/ditto-companion"
         target="_blank"
         rel="noreferrer"
       >
         Ditto Companion
       </a>
-      are hackathon software created by the Webnative team. See the project repositories
+      are hackathon software created by the ODD SDK team. See the project repositories
       to try them out.
     </p>
   </div>
@@ -47,8 +47,8 @@
         Unsupported device
       </h3>
       <p>
-        It appears this device isn’t supported. Webnative requires IndexedDB in
-        order to function. This browser doesn’t appear to implement this API.
+        It appears this device isn’t supported. The ODD SDK requires IndexedDB
+        in order to function. This browser doesn’t appear to implement this API.
         Are you in a Firefox private window?
       </p>
     </div>
